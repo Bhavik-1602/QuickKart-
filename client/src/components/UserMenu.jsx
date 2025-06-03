@@ -1,92 +1,100 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import Divider from './Divider'
-import Axios from '../utils/Axios'
-import SummaryApi from '../common/SummaryApi'
-import { logout } from '../store/userSlice'
-import toast from 'react-hot-toast'
-import AxiosToastError from '../utils/AxiosToastError'
-import { HiOutlineExternalLink } from "react-icons/hi";
-import isAdmin from '../utils/isAdmin'
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import Axios from '../utils/Axios';
+import SummaryApi from '../common/SummaryApi';
+import { logout } from '../store/userSlice';
+import toast from 'react-hot-toast';
+import AxiosToastError from '../utils/AxiosToastError';
+import { HiOutlineExternalLink } from 'react-icons/hi';
+import isAdmin from '../utils/isAdmin';
 
-const UserMenu = ({close}) => {
-   const user = useSelector((state)=> state.user)
-   const dispatch = useDispatch()
-   const navigate = useNavigate()
+const UserMenu = ({ close }) => {
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-   const handleLogout = async()=>{
-        try {
-          const response = await Axios({
-             ...SummaryApi.logout
-          })
-          console.log("logout",response)
-          if(response.data.success){
-            if(close){
-              close()
-            }
-            dispatch(logout())
-            localStorage.clear()
-            toast.success(response.data.message)
-            navigate("/")
-          }
-        } catch (error) {
-          console.log(error)
-          AxiosToastError(error)
-        }
-   }
-
-   const handleClose = ()=>{
-      if(close){
-        close()
+  const handleLogout = async () => {
+    try {
+      const response = await Axios({
+        ...SummaryApi.logout,
+      });
+      if (response.data.success) {
+        if (close) close();
+        dispatch(logout());
+        localStorage.clear();
+        toast.success(response.data.message);
+        navigate('/');
       }
-   }
+    } catch (error) {
+      AxiosToastError(error);
+    }
+  };
+
+  const handleClose = () => {
+    if (close) close();
+  };
+
+  const menuItems = [
+    ...(isAdmin(user.role)
+      ? [
+          { to: '/dashboard/category', label: 'Category' },
+          { to: '/dashboard/subcategory', label: 'Sub Category' },
+          { to: '/dashboard/upload-product', label: 'Upload Product' },
+          { to: '/dashboard/product', label: 'Product' },
+        ]
+      : []),
+    { to: '/dashboard/myorders', label: 'My Orders' },
+    { to: '/dashboard/address', label: 'Save Address' },
+  ];
+
   return (
-    <div>
-        <div className='font-semibold'>My Account</div>
-        <div className='text-sm flex items-center gap-2'>
-          <span className='max-w-52 text-ellipsis line-clamp-1'>{user.name || user.mobile} <span className='text-medium text-red-600'>{user.role === "ADMIN" ? "(Admin)" : "" }</span></span>
-          <Link onClick={handleClose} to={"/dashboard/profile"} className='hover:text-primary-200'>
-            <HiOutlineExternalLink size={15}/>
+    <div className="bg-white rounded-xl shadow-lg p-4 w-64 max-w-full border border-gray-100">
+      {/* Header */}
+      <h2 className="text-lg font-bold text-gray-800 mb-2">My Account</h2>
+      <div className="flex items-center justify-between gap-2 mb-4">
+        <span className="text-sm text-gray-700 truncate max-w-40">
+          {user.name || user.mobile}{' '}
+          {user.role === 'ADMIN' && (
+            <span className="text-red-600 font-semibold">(Admin)</span>
+          )}
+        </span>
+        <Link
+          to="/dashboard/profile"
+          onClick={handleClose}
+          className="text-blue-600 hover:text-blue-700 transition"
+          aria-label="View profile"
+        >
+          <HiOutlineExternalLink size={16} />
+        </Link>
+      </div>
+
+      {/* Divider */}
+      <hr className="border-gray-200 my-2" />
+
+      {/* Menu Items */}
+      <nav className="grid gap-1" role="navigation" aria-label="User menu">
+        {menuItems.map((item, index) => (
+          <Link
+            key={`menu-item-${index}`}
+            to={item.to}
+            onClick={handleClose}
+            className="px-3 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+            aria-label={item.label}
+          >
+            {item.label}
           </Link>
-        </div>
-
-        <Divider/>
-
-        <div className='text-sm grid gap-1'>
-            {
-              isAdmin(user.role) && (
-                <Link onClick={handleClose} to={"/dashboard/category"} className='px-2 hover:bg-orange-200 py-1'>Category</Link>
-              )
-            }
-
-            {
-              isAdmin(user.role) && (
-                <Link onClick={handleClose} to={"/dashboard/subcategory"} className='px-2 hover:bg-orange-200 py-1'>Sub Category</Link>
-              )
-            }
-
-            {
-              isAdmin(user.role) && (
-                <Link onClick={handleClose} to={"/dashboard/upload-product"} className='px-2 hover:bg-orange-200 py-1'>Upload Product</Link>
-              )
-            }
-
-            {
-              isAdmin(user.role) && (
-                <Link onClick={handleClose} to={"/dashboard/product"} className='px-2 hover:bg-orange-200 py-1'>Product</Link>
-              )
-            }
-
-            <Link onClick={handleClose} to={"/dashboard/myorders"} className='px-2 hover:bg-orange-200 py-1'>My Orders</Link>
-
-            <Link onClick={handleClose} to={"/dashboard/address"} className='px-2 hover:bg-orange-200 py-1'>Save Address</Link>
-
-            <button onClick={handleLogout} className='text-left px-2 hover:bg-orange-200 py-1'>Log Out</button>
-
-        </div>
+        ))}
+        <button
+          onClick={handleLogout}
+          className="px-3 py-2 text-sm text-left text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+          aria-label="Log out"
+        >
+          Log Out
+        </button>
+      </nav>
     </div>
-  )
-}
+  );
+};
 
-export default UserMenu
+export default UserMenu;

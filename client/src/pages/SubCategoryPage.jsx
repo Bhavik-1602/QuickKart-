@@ -95,7 +95,7 @@ const SubCategoryPage = () => {
               <button onClick={()=>{
                   setOpenEdit(true)
                   setEditData(row.original)
-              }} className='p-2 bg-green-100 rounded-full hover:text-green-600'>
+              }} className='p-2 bg-blue-100 rounded-full hover:text-blue-600'>
                   <HiPencil size={20}/>
               </button>
               <button onClick={()=>{

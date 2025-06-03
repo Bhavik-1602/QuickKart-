@@ -86,14 +86,14 @@ const AddToCartButton = ({ data }) => {
             {
                 isAvailableCart ? (
                     <div className='flex w-full h-full'>
-                        <button onClick={decreaseQty} className='bg-green-600 hover:bg-green-700 text-white flex-1 w-full p-1 rounded flex items-center justify-center'><FaMinus /></button>
+                        <button onClick={decreaseQty} className='border to-blue-500 text-white flex-1 w-full p-1 rounded flex items-center justify-center'><FaMinus /></button>
 
                         <p className='flex-1 w-full font-semibold px-1 flex items-center justify-center'>{qty}</p>
 
-                        <button onClick={increaseQty} className='bg-green-600 hover:bg-green-700 text-white flex-1 w-full p-1 rounded flex items-center justify-center'><FaPlus /></button>
+                        <button onClick={increaseQty} className='bg-blue-600 hover:bg-blue-700 text-white flex-1 w-full p-1 rounded flex items-center justify-center'><FaPlus /></button>
                     </div>
                 ) : (
-                    <button onClick={handleADDTocart} className='bg-green-600 hover:bg-green-700 text-white px-2 lg:px-4 py-1 rounded'>
+                    <button onClick={handleADDTocart} className='border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-2 lg:px-4 py-1 rounded transition duration-200'>
                         {loading ? <Loading /> : "Add"}
                     </button>
                 )

@@ -100,7 +100,7 @@ const DisplayCartItem = ({close}) => {
                                 src={imageEmpty}
                                 className='w-full h-full object-scale-down' 
                             />
-                            <Link onClick={close} to={"/"} className='block bg-green-600 px-4 py-2 text-white rounded'>Shop Now</Link>
+                            <Link onClick={close} to={"/"} className='block bg-blue-600 px-4 py-2 text-white rounded'>Shop Now</Link>
                         </div>
                     )
                 }
@@ -110,7 +110,7 @@ const DisplayCartItem = ({close}) => {
             {
                 cartItem[0] && (
                     <div className='p-2'>
-                        <div className='bg-green-700 text-neutral-100 px-4 font-bold text-base py-4 static bottom-3 rounded flex items-center gap-4 justify-between'>
+                        <div className='bg-blue-700 text-neutral-100 px-4 font-bold text-base py-4 static bottom-3 rounded flex items-center gap-4 justify-between'>
                             <div>
                                 {DisplayPriceInRupees(totalPrice)}
                             </div>

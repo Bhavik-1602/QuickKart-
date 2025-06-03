@@ -126,14 +126,14 @@ const ProductDisplayPage = () => {
 
 
         <div className='p-4 lg:pl-7 text-base lg:text-lg'>
-            <p className='bg-green-300 w-fit px-2 rounded-full'>10 Min</p>
+            <p className='bg-blue-300 w-fit px-2 rounded-full'>10 Min</p>
             <h2 className='text-lg font-semibold lg:text-3xl'>{data.name}</h2>  
             <p className=''>{data.unit}</p> 
             <Divider/>
             <div>
               <p className=''>Price</p> 
               <div className='flex items-center gap-2 lg:gap-4'>
-                <div className='border border-green-600 px-4 py-2 rounded bg-green-50 w-fit'>
+                <div className='border border-blue-600 px-4 py-2 rounded bg-blue-50 w-fit'>
                     <p className='font-semibold text-lg lg:text-xl'>{DisplayPriceInRupees(pricewithDiscount(data.price,data.discount))}</p>
                 </div>
                 {
@@ -143,7 +143,7 @@ const ProductDisplayPage = () => {
                 }
                 {
                   data.discount && (
-                    <p className="font-bold text-green-600 lg:text-2xl">{data.discount}% <span className='text-base text-neutral-500'>Discount</span></p>
+                    <p className="font-bold text-blue-600 lg:text-2xl">{data.discount}% <span className='text-base text-neutral-500'>Discount</span></p>
                   )
                 }
                 
@@ -156,7 +156,7 @@ const ProductDisplayPage = () => {
                   <p className='text-lg text-red-500 my-2'>Out of Stock</p>
                 ) 
                 : (
-                  // <button className='my-4 px-4 py-1 bg-green-600 hover:bg-green-700 text-white rounded'>Add</button>
+                  // <button className='my-4 px-4 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded'>Add</button>
                   <div className='my-4'>
                     <AddToCartButton data={data}/>
                   </div>
@@ -164,7 +164,7 @@ const ProductDisplayPage = () => {
               }
            
 
-            <h2 className='font-semibold'>Why shop from binkeyit? </h2>
+            <h2 className='font-semibold'>Why shop from Quickkart? </h2>
             <div>
                   <div className='flex  items-center gap-4 my-4'>
                       <img

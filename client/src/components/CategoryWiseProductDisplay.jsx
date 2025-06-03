@@ -50,32 +50,37 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
         containerRef.current.scrollLeft -= 200
     }
 
-    
+    const handleRedirectProductListpage = () => {
+        const subcategory = subCategoryData.find(sub => {
+            const filterData = sub.category.some(c => {
+                return c._id == id
+            })
 
-  
-
-  const handleRedirectProductListpage = ()=>{
-      const subcategory = subCategoryData.find(sub =>{
-        const filterData = sub.category.some(c => {
-          return c._id == id
+            return filterData ? true : null
         })
+        const url = `/${valideURLConvert(name)}-${id}/${valideURLConvert(subcategory?.name)}-${subcategory?._id}`
 
-        return filterData ? true : null
-      })
-      const url = `/${valideURLConvert(name)}-${id}/${valideURLConvert(subcategory?.name)}-${subcategory?._id}`
+        return url
+    }
 
-      return url
-  }
-
-  const redirectURL =  handleRedirectProductListpage()
+    const redirectURL = handleRedirectProductListpage()
+    
     return (
-        <div>
-            <div className='container mx-auto p-4 flex items-center justify-between gap-4'>
-                <h3 className='font-semibold text-lg md:text-xl'>{name}</h3>
-                <Link  to={redirectURL} className='text-green-600 hover:text-green-400'>See All</Link>
+        <div className="bg-white border-b border-gray-100 py-8">
+            {/* Simple Header */}
+            <div className='container mx-auto px-4 flex items-center justify-between mb-6'>
+                <h3 className='text-2xl font-bold text-gray-800'>{name}</h3>
+                <Link 
+                    to={redirectURL} 
+                    className='text-blue-600 hover:text-blue-800 font-medium text-sm underline'
+                >
+                    View All
+                </Link>
             </div>
-            <div className='relative flex items-center '>
-                <div className=' flex gap-4 md:gap-6 lg:gap-8 container mx-auto px-4 overflow-x-scroll scrollbar-none scroll-smooth' ref={containerRef}>
+
+            {/* Products Container */}
+            <div className='relative'>
+                <div className='flex gap-4 container mx-auto px-4 overflow-x-auto scrollbar-hide' ref={containerRef}>
                     {loading &&
                         loadingCardNumber.map((_, index) => {
                             return (
@@ -83,7 +88,6 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
                             )
                         })
                     }
-
 
                     {
                         data.map((p, index) => {
@@ -95,14 +99,21 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
                             )
                         })
                     }
-
                 </div>
-                <div className='w-full left-0 right-0 container mx-auto  px-2  absolute hidden lg:flex justify-between'>
-                    <button onClick={handleScrollLeft} className='z-10 relative bg-white hover:bg-gray-100 shadow-lg text-lg p-2 rounded-full'>
-                        <FaAngleLeft />
+
+                {/* Simple Navigation Buttons */}
+                <div className='absolute top-1/2 -translate-y-1/2 left-2 right-2 flex justify-between pointer-events-none hidden lg:flex'>
+                    <button 
+                        onClick={handleScrollLeft} 
+                        className='pointer-events-auto w-10 h-10 bg-white border border-gray-300 hover:border-gray-400 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all'
+                    >
+                        <FaAngleLeft className="text-gray-600" />
                     </button>
-                    <button onClick={handleScrollRight} className='z-10 relative  bg-white hover:bg-gray-100 shadow-lg p-2 text-lg rounded-full'>
-                        <FaAngleRight />
+                    <button 
+                        onClick={handleScrollRight} 
+                        className='pointer-events-auto w-10 h-10 bg-white border border-gray-300 hover:border-gray-400 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all'
+                    >
+                        <FaAngleRight className="text-gray-600" />
                     </button>
                 </div>
             </div>
