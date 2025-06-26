@@ -1,30 +1,35 @@
-import { Resend } from 'resend';
-import dotenv from 'dotenv'
-dotenv.config()
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+dotenv.config();
 
-if(!process.env.RESEND_API){
-    console.log("Provide RESEND_API in side the .env file")
+if (!process.env.MAIL_USER || !process.env.MAIL_PASS) {
+  console.log("Provide MAIL_USER and MAIL_PASS inside the .env file");
 }
 
-const resend = new Resend(process.env.RESEND_API);
+// Create transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail', // or use 'hotmail', 'yahoo', or a custom SMTP
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS
+  }
+});
 
-const sendEmail = async({sendTo, subject, html })=>{
-    try {
-        const { data, error } = await resend.emails.send({
-            from: 'onboarding@resend.dev',
-            to: sendTo,
-            subject: subject,
-            html: html,
-        });
+// Email sending function
+const sendEmail = async ({ sendTo, subject, html }) => {
+  try {
+    const mailOptions = {
+      from: `"Your App Name" <${process.env.MAIL_USER}>`,
+      to: sendTo,
+      subject: subject,
+      html: html
+    };
 
-        if (error) {
-            return console.error({ error });
-        }
+    const info = await transporter.sendMail(mailOptions);
+    return info;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-        return data
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-export default sendEmail
+export default sendEmail;

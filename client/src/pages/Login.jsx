@@ -69,7 +69,7 @@ const Login = () => {
 
     }
     return (
-        <section className='w-full container mx-auto px-2'>
+        <section className='w-full min-h-screen flex justify-center items-center'>
             <div className='bg-white my-4 w-full max-w-lg mx-auto rounded p-7'>
 
                 <form className='grid gap-4 py-4' onSubmit={handleSubmit}>
