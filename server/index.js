@@ -16,18 +16,23 @@ import addressRouter from './route/address.route.js';
 import orderRouter from './route/order.route.js';
 
 const app = express();
+
+// Log environment variables for debugging
+console.log("FRONTEND_URL:", process.env.FRONTEND_URL);
+console.log("PORT:", process.env.PORT);
+
 app.use(cors({
     credentials: true,
-    origin: process.env.FRONTEND_URL
+    origin: process.env.FRONTEND_URL || '*' // Fallback for testing
 }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(morgan('dev')); // Fixed: Specify 'dev' format
+app.use(morgan('dev'));
 app.use(helmet({
     crossOriginResourcePolicy: false
 }));
 
-const PORT = process.env.PORT ; // Fixed: Corrected the PORT logic
+const PORT = process.env.PORT || 3000; // Fallback port
 
 app.get("/", (request, response) => {
     response.json({
@@ -35,6 +40,7 @@ app.get("/", (request, response) => {
     });
 });
 
+// Mount routers
 app.use('/api/user', userRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/file", uploadRouter);
@@ -44,8 +50,16 @@ app.use("/api/cart", cartRouter);
 app.use("/api/address", addressRouter);
 app.use('/api/order', orderRouter);
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: "Internal server error" });
+});
+
 connectDB().then(() => {
     app.listen(PORT, () => {
         console.log("Server is running on port", PORT);
     });
+}).catch(err => {
+    console.error("Database connection failed:", err);
 });
